@@ -16,7 +16,57 @@
 <br>
 
 ---
+<h3 align =center> Tools</h3>
+
+<details>
+<summary><b>sha256sum</b></summary>
+&nbsp;&nbsp;&nbsp;&nbsp; Hashes the raw bytes of the file with SHA-256, producing a 64-character hex fingerprint that changes completely if a single byte of the file changes.
+</details>
+
+<details>
+<summary><b>strings</b></summary>
+&nbsp;&nbsp;&nbsp;&nbsp; Scans the file for runs of printable characters and print anything above a minimum length - 4 character by default on GNU strings. It's doesn't understand the file format at all; it just looks for text- shaped byte sequence anywhere in the file.
+</details>
+
+<details>
+<summary><b>readelf</b></summary>
+&nbsp;&nbsp;&nbsp;&nbsp; it is a Linux command-line tool that parses and displays detailed structural information directly from ELF (Executable and Linkable Format) binary files without executing them.
+</details>
+
+<details>
+<summary><b>objdump</b></summary>
+&nbsp;&nbsp;&nbsp;&nbsp; It is a GNU command-line utility used to inspect object files, executable binaries and shared libraries. Its most critical role in reverse engineering is disassembly - converting raw machine code back into human- readable assembly instructions.
+</details>
+
+---
 <h3 align =center> Walkthrough</h3>
+
+<b>Q1. What is the SHA256 hash of the malicious binary?</b>
+
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp; Tool: sha256sum
+<br>
+
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp; Before opening, running or even reading the binary further in a safe environment, you hash it. Hash is a unique fingerprint of a file, to gain for information about it.
+<br>
+
+```bash
+sha256sum agent
+```
+<img width="579" height="46" alt="1" src="https://github.com/user-attachments/assets/62ef8a2b-7ee4-4865-895c-7fa371c1e252" />
+
+<b>Q2. What is the IP address hardcoded in the binary for C2 communication?</b>
+
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp; Tool: strings
+<br>
+
+
+
+
+
+
 
 
 ---
