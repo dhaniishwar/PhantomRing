@@ -43,12 +43,10 @@
 
 <b>Q1. What is the SHA256 hash of the malicious binary?</b>
 
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp; Tool: sha256sum
-<br>
 
 <br>
-&nbsp;&nbsp;&nbsp;&nbsp; Before opening, running or even reading the binary further in a safe environment, you hash it. Hash is a unique fingerprint of a file, to gain for information about it.
+&nbsp;&nbsp;&nbsp;&nbsp; Hashing is the step zero for any malware triage, it is unique fingerprint of the file. I ran sha256sum tool get hash, this pushes every byte of the file through the SHA-256 algorithm and prints a 64- character fingerprint.
+<br>
 <br>
 
 ```bash
@@ -59,9 +57,20 @@ sha256sum agent
 <b>Q2. What is the IP address hardcoded in the binary for C2 communication?</b>
 
 <br>
-&nbsp;&nbsp;&nbsp;&nbsp; Tool: strings
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp; Before we get the IP address, we get to known about the malicious file with tool file. it's reads the header behind the scenes and translates it into a clean, human- readable summary.
+<br>
 <br>
 
+```bash
+file agent
+```
+
+<img width="660" height="44" alt="2" src="https://github.com/user-attachments/assets/cc9f1c3e-6bb3-4921-8ff3-f1b31dbb628f" />
+
+<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp; ELF 64-bit PIE executable formate, x86-64 the CPU it targets, PIE meaning the OS can load it at a different memory address each run 
 
 
 
