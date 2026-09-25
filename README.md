@@ -107,7 +107,7 @@ objdump -d agent | grep -A5 -B5 "htons"
 
 <br>
 <br>
-&nbsp;&nbsp;&nbsp;&nbsp; we can see the network bytes for the port right before call to htons, we found "mov $0x115d". Convert the network bytes into decimals, we will get port 4445.
+&nbsp;&nbsp;&nbsp;&nbsp; we can see the network bytes for the port right before call to htons, we found "mov $0x115d". Convert the network bytes into decimals, we will get port <b>4445</b>.
 <br>
 <br>
 
@@ -127,14 +127,14 @@ objdump -d agent | grep -A5 -B5 "sleep"
 
 <br>
 <br>
-&nbsp;&nbsp;&nbsp;&nbsp; Same like before, right before calling sleep@plt, we can see the network bytes for the seconds to hold the program execution after a failed connection. Convert the network bytes into decimals, we will get 120 seconds. 
+&nbsp;&nbsp;&nbsp;&nbsp; Same like before, right before calling sleep@plt, we can see the network bytes for the seconds to hold the program execution after a failed connection. Convert the network bytes into decimals, we will get <b>120</b> seconds. 
 <br>
 
 ---
 <b>Q5. How many different commands does the agent support? (excluding invalid commands)</b>
 
 <br>
-&nbsp;&nbsp;&nbsp;&nbsp; We saw few commands when we used strings tool, but known we going to only grep "cmd". Cmd is a clear tag for command names and commants.
+&nbsp;&nbsp;&nbsp;&nbsp; We saw few commands when we used strings tool, but known we going to only grep <b>cmd</b>. Cmd is a clear tag for command names and commants.
 <br>
 <br>
 
@@ -166,14 +166,48 @@ strings agent | grep -A5 -B5 'linux'
 
 <br>
 <br>
-&nbsp;&nbsp;&nbsp;&nbsp; When a C program calls external kernel features or shared libraries (like io_uring_queue_init). So, io_uring is a highly asynchronous I/O interface for the Linux kernel.
+&nbsp;&nbsp;&nbsp;&nbsp; When a C program calls external kernel features or shared libraries (like io_uring_queue_init). So, <b>io_uring</b> is a highly asynchronous I/O interface for the Linux kernel.
 <br>
 
 ---
 <b>Q7. What file does the agent read to enumerate logged-in users?</b>
 
 <br>
-&nbsp;&nbsp;&nbsp;&nbsp; 
+&nbsp;&nbsp;&nbsp;&nbsp; At this point, I'm really tired of grabbing keyword from the strings list. The alternative tool I ended up using is "readelf". Readelf parses ELF binary headers to target specific sections instead of scanning raw file bytes blindly. The output of the readelf is clean, organized and structured. the ".rodata" section is a specific segment in an ELF binary reserved for constants that the program needs to read during execution, but is strictly forbidden from changing. 
+<br>
+<br>
+
+```bash
+readelf -p .rodata agent
+```
+
+<img width="430" height="622" alt="10" src="https://github.com/user-attachments/assets/0b703bfb-a864-470c-b13b-33f0c180cfb6" />
+<br>
+<img width="427" height="345" alt="11" src="https://github.com/user-attachments/assets/dc5018ac-f773-4e2e-b7dc-3a7214c4999b" />
+
+<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp; We can see right before "Logged users:\n", agent read a file path <b>/var/run/utmp</b>. 
+<br>
+<br>
+
+<img width="340" height="38" alt="13" src="https://github.com/user-attachments/assets/4fe0159d-df4c-4b16-a683-6cdaa485b143" />
+
+---
+<b>Q8. What directory does the agent scan when searching for SUID binaries for privilege escalation?</b>
+
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp; Agent only checks one specific directory for privilege escalation, /usr/bin. Legitimate Linux commands that standard users need to execute with temporary root privileges are installed in <b>/usr/bin</b>.
+<br>
+<br>
+
+<img width="294" height="48" alt="14" src="https://github.com/user-attachments/assets/f3ea6594-c257-4af0-a3eb-499cfaffab24" />
+
+---
+<b>Q9. What string does the agent search for in /proc/[pid]/maps to identify security tools using eBPF?</b>
+
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp; We can see the string after the /proc/%s/maps is <b>anon_inode:bpf-map</b>. 
 
 ---
 <h3 align =center> Questions & Answers </h3>
