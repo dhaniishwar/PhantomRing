@@ -207,7 +207,52 @@ readelf -p .rodata agent
 <b>Q9. What string does the agent search for in /proc/[pid]/maps to identify security tools using eBPF?</b>
 
 <br>
-&nbsp;&nbsp;&nbsp;&nbsp; We can see the string after the /proc/%s/maps is <b>anon_inode:bpf-map</b>. 
+&nbsp;&nbsp;&nbsp;&nbsp; We can see the string after the /proc/%s/maps is <b>anon_inode:bpf-map</b>. Here, agent got access to the /proc directory (system's live control room), then loops through every active directory's to open up a memory map file (maps) to see everything that program is actively using. It searches specifically for key string: anon_inode:bpf-map.
+<br>
+<br>
+
+<img width="295" height="40" alt="15" src="https://github.com/user-attachments/assets/1976003a-a781-48a0-993b-4611b1736d78" />
+
+---
+<b>Q10. What is the full path of the first tracing file the agent attempts to disable?</b>
+
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp; the agent interacts with the Linux framework under <b>/sys/kernel/debug/tracing/</b> to manipulate kernel-level event logging. By accessing <b>tracing_on</b>, <b>set_event</b>, and <b>current_tracer</b>, it can disable kernel tracing to blind host security sensors or selectively monitor system calls while evading user-space detection. Once its operational tasks are complete, it logs Agent disconnecting and exiting\n to execute a clean teardown and terminate its process.  
+<br>
+<br>
+
+<img width="313" height="50" alt="16" src="https://github.com/user-attachments/assets/c5639e21-c32f-43eb-9388-470473fab3e2" />
+
+---
+<b>Q11. What procfs path does the agent read to find its own executable location before self-destruction?</b>
+
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp; The string Agent will self-destruct\n serves as an internal log message printed immediately before the binary begins its self-deletion routine. Directly following it, <b>/proc/self/exe</b> is a special Linux symbolic link pointing to the currently running executable on disk, which the agent reads to dynamically determine its own file location.  
+<br>
+<br>
+
+<img width="232" height="39" alt="17" src="https://github.com/user-attachments/assets/aa2c5c64-745c-4061-9b4c-83c71182ffde" />
+
+---
+<b>Q12. What command string is compared by the agent to trigger deletion of its own binary?</b>
+
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp; The process_cmd evaluates the input against <b>sdestruct</b> to trigger the binary's cmd_selfdestruct routine.
+<br>
+<br>
+
+<img width="112" height="35" alt="19" src="https://github.com/user-attachments/assets/92c8e2bb-1439-4616-aa5b-1d613695deef" />
+<br>
+<img width="251" height="35" alt="18" src="https://github.com/user-attachments/assets/b17c972c-2e2d-407b-a047-28d0ad6f1699" />
+
+---
+<b> Note on Methodology & Screenshots </b>
+
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp; If you're wondering why the screenshot shows the entire string dump instead of "grep" results, I actually used grep during my analysis but forgot to take screenshots before closing the terminal! I'll make sure to document each step properly with screenshots in future writeups. Thanks for taking the time to read this, please let me know if you spot any errors or have suggestions for easier tools to use.
+<br>
+<br>
+
 
 ---
 <h3 align =center> Questions & Answers </h3>
@@ -268,6 +313,6 @@ readelf -p .rodata agent
 </details>
 
 <details>
-<summary><b>Q12. What command string is compared by the agent to trigger deletion of its own binary?</summary>
+<summary><b>Q12. What command string is compared by the agent to trigger deletion of its own binary?</b></summary>
 <b>Answer:</b> sdestruct
 </details>
